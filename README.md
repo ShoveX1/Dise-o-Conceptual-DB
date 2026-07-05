@@ -1,6 +1,80 @@
 # Diseño Conceptual de la Base de Datos (Librería/Tienda)
 
-## 1. Diagrama Entidad-Relación (Mermaid)
+## 1. Diagrama Conceptual (Mermaid)
+
+```mermaid
+flowchart TD
+    %% Estilos para simular Notación de Chen
+    classDef entidad fill:#2c3e50,stroke:#34495e,stroke-width:2px,color:#fff;
+    classDef relacion fill:#d35400,stroke:#e67e22,stroke-width:2px,color:#fff;
+    classDef atributo fill:#ecf0f1,stroke:#bdc3c7,stroke-width:1px,color:#2c3e50;
+    classDef pk fill:#27ae60,stroke:#2ecc71,stroke-width:2px,color:#fff;
+    classDef herencia fill:#7f8c8d,stroke:#95a5a6,stroke-width:2px,color:#fff;
+
+    %% 1. ENTIDADES (Rectángulos)
+    CLI[CLIENTE]:::entidad
+    PN[PERSONA_NATURAL]:::entidad
+    PJ[PERSONA_JURIDICA]:::entidad
+    PED[PEDIDO]:::entidad
+    LIB[LIBRO]:::entidad
+    EDI[EDITORIAL]:::entidad
+    AUT[AUTOR]:::entidad
+
+    %% 2. RELACIONES (Rombos)
+    HER{es_un}:::herencia
+    REA{Realiza}:::relacion
+    CON{Contiene}:::relacion
+    PRO{Provee}:::relacion
+    ESC{Escribe}:::relacion
+
+    %% 3. CONEXIONES Y CARDINALIDADES
+    CLI --- HER
+    HER --- PN
+    HER --- PJ
+
+    CLI ---|"1"| REA ---|"N"| PED
+    PED ---|"M"| CON ---|"N"| LIB
+    EDI ---|"1"| PRO ---|"N"| LIB
+    AUT ---|"M"| ESC ---|"N"| LIB
+
+    %% 4. ATRIBUTOS (Óvalos)
+    
+    %% Atributos Cliente
+    CLI --- A_CLI_N([Nombre]):::atributo
+    CLI --- A_CLI_D([Direccion]):::atributo
+    CLI --- A_CLI_T([Telefono]):::atributo
+    CLI --- A_CLI_E([Email]):::atributo
+
+    %% Atributos Subclases
+    PN --- A_PN_D([Doc_Identidad]):::atributo
+    PJ --- A_PJ_R([RUC]):::atributo
+
+    %% Atributos Pedido
+    PED --- A_PED_F([Fecha]):::atributo
+    PED --- A_PED_E([Estado]):::atributo
+
+    %% ATRIBUTO EN LA RELACIÓN (¡Puro nivel conceptual!)
+    CON -.- A_CON_C([Cantidad_Comprada]):::atributo
+
+    %% Atributos Libro
+    LIB --- A_LIB_ID([ISBN]):::atributo
+    LIB --- A_LIB_T([Titulo]):::atributo
+    LIB --- A_LIB_C([Categoria]):::atributo
+    LIB --- A_LIB_A([Anio_Pub]):::atributo
+    LIB --- A_LIB_V([Valor]):::atributo
+    LIB --- A_LIB_S([Stock]):::atributo
+
+    %% Atributos Editorial
+    EDI --- A_EDI_N([Nombre]):::atributo
+    EDI --- A_EDI_C([Contacto]):::atributo
+    EDI --- A_EDI_E([Email]):::atributo
+    EDI --- A_EDI_T([Telefonos]):::atributo
+
+    %% Atributos Autor
+    AUT --- A_AUT_N([Nombre]):::atributo
+```
+
+## 2. Diagrama Logico Entidad-Relación (Mermaid)
 
 ```mermaid
 erDiagram
@@ -90,7 +164,7 @@ erDiagram
 
 ---
 
-## 2. Descripción Detallada del Diseño
+## 3. Descripción Detallada del Diseño
 
 ### A. Jerarquía de Generalización (Herencia)
 * **Superclase:** `CLIENTE`
