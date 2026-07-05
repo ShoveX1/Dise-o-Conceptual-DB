@@ -1,4 +1,4 @@
-# Diseño Conceptual de la Base de Datos (Librería/Tienda)
+# Diseño Conceptual de la Base de Datos
 
 ## 1. Diagrama Conceptual (Mermaid)
 
@@ -74,7 +74,7 @@ flowchart TD
     AUT --- A_AUT_N([Nombre]):::atributo
 ```
 
-## 2. Diagrama Logico Entidad-Relación (Mermaid)
+## 2. Diagrama Lógico Entidad-Relación (Mermaid)
 
 ```mermaid
 erDiagram
