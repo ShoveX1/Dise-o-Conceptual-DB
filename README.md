@@ -31,7 +31,7 @@ erDiagram
     }
 
     LIBRO {
-        int ID_Libro PK
+        string ISBN PK
         string Titulo
         string Categoria
         int Anio_Publicacion
@@ -73,7 +73,7 @@ erDiagram
     LIBRO ||--o{ DETALLE_PEDIDO : "es_incluido"
     
     DETALLE_PEDIDO {
-        int ID_Pedido PK, FK
+        string ISBN PK, FK
         int ID_Libro PK, FK
         int Cantidad_Comprada
     }
@@ -84,7 +84,7 @@ erDiagram
 
     AUTOR_LIBRO {
         int ID_Autor PK, FK
-        int ID_Libro PK, FK
+        string ISBN PK, FK
     }
 ```
 
