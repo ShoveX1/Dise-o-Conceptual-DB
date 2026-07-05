@@ -1,6 +1,6 @@
 # Diseño Conceptual de la Base de Datos
 
-##Integrantes:
+## Integrantes:
 ### Eduardo Cuba
 ### Wilson Uraccahua
 ### Roniel Chambilla
