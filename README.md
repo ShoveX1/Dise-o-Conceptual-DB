@@ -1,5 +1,10 @@
 # Diseño Conceptual de la Base de Datos
 
+##Integrantes:
+### Eduardo Cuba
+### Wilson Uraccahua
+### Roniel Chambilla
+
 ## 1. Diagrama Conceptual (Mermaid)
 
 ```mermaid
