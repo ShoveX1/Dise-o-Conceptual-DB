@@ -1,9 +1,5 @@
 # Diseño Conceptual de la Base de Datos (Librería/Tienda)
 
-Este documento detalla el modelo conceptual y relacional de la base de datos solicitada, cumpliendo con las reglas de negocio descritas. Para una visualización gráfica, se incluye un diagrama interactivo en formato **Mermaid**.
-
----
-
 ## 1. Diagrama Entidad-Relación (Mermaid)
 
 ```mermaid
