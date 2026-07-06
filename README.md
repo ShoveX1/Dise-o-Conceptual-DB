@@ -1,4 +1,4 @@
-# Diseño Conceptual de la Base de Datos
+# Diseño de la Base de Datos
 
 ## Integrantes:
 *  Eduardo Cuba
