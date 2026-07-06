@@ -22,6 +22,7 @@ flowchart TD
     PJ[PERSONA_JURIDICA]:::entidad
     PED[PEDIDO]:::entidad
     LIB[LIBRO]:::entidad
+    INV[INVENTARIO]:::entidad
     EDI[EDITORIAL]:::entidad
     AUT[AUTOR]:::entidad
 
@@ -31,6 +32,7 @@ flowchart TD
     CON{Contiene}:::relacion
     PRO{Provee}:::relacion
     ESC{Escribe}:::relacion
+    TIE{Tiene}:::relacion
 
     %% 3. CONEXIONES Y CARDINALIDADES
     CLI --- HER
@@ -39,6 +41,7 @@ flowchart TD
 
     CLI ---|"1"| REA ---|"N"| PED
     PED ---|"M"| CON ---|"N"| LIB
+    LIB ---|"1"| TIE ---|"1"| INV
     EDI ---|"1"| PRO ---|"N"| LIB
     AUT ---|"M"| ESC ---|"N"| LIB
 
@@ -67,7 +70,11 @@ flowchart TD
     LIB --- A_LIB_C([Categoria]):::atributo
     LIB --- A_LIB_A([Anio_Pub]):::atributo
     LIB --- A_LIB_V([Valor]):::atributo
-    LIB --- A_LIB_S([Stock]):::atributo
+
+    %% Atributos Inventario
+    INV --- A_INV_C([Cantidad_Disponible]):::atributo
+    INV --- A_INV_D([Disponible]):::atributo
+    INV --- A_INV_F([Fecha_Ultima_Actualizacion]):::atributo
 
     %% Atributos Editorial
     EDI --- A_EDI_N([Nombre]):::atributo
@@ -115,8 +122,14 @@ erDiagram
         string Categoria
         int Anio_Publicacion
         float Valor_Precio
-        int Stock_Disponible
         int ID_Editorial FK
+    }
+
+    INVENTARIO {
+        string ISBN PK, FK
+        int Cantidad_Disponible
+        boolean Disponible
+        date Fecha_Ultima_Actualizacion
     }
 
     EDITORIAL {
@@ -145,6 +158,9 @@ erDiagram
     %% Relación Editorial - Libro (1:N)
     EDITORIAL ||--|{ LIBRO : "provee"
 
+    %% Relación Libro - Inventario (1:1)
+    LIBRO ||--|| INVENTARIO : "tiene"
+
     %% Relación Muchos a Muchos (M:N) resuelta con tablas intermedias/asociativas
     
     %% Detalle de Pedido (Contiene)
@@ -152,8 +168,8 @@ erDiagram
     LIBRO ||--o{ DETALLE_PEDIDO : "es_incluido"
     
     DETALLE_PEDIDO {
+        int ID_Pedido PK, FK
         string ISBN PK, FK
-        int ID_Libro PK, FK
         int Cantidad_Comprada
     }
 
@@ -189,5 +205,6 @@ erDiagram
    * Esto permite que un libro tenga coautores (1 a N) y que un autor pueda escribir múltiples libros (1 a N).
 
 ### D. Gestión del Inventario (Regla de Negocio)
-* La entidad `LIBRO` cuenta con el atributo `Stock_Disponible`.
-* **Operación:** Antes de insertar un registro en `DETALLE_PEDIDO`, a nivel de aplicación (software/backend) se debe consultar el `Stock_Disponible` del libro. Si `Cantidad_Comprada <= Stock_Disponible`, se permite la transacción y se resta dicha cantidad del inventario; de lo contrario, se rechaza la operación.
+* La entidad `INVENTARIO` almacena la disponibilidad de cada libro mediante `Cantidad_Disponible`, `Disponible` y `Fecha_Ultima_Actualizacion`.
+* **Relación con `LIBRO`:** Es una relación 1:1, porque cada libro del catálogo tiene un único registro de inventario asociado.
+* **Operación:** Antes de insertar un registro en `DETALLE_PEDIDO`, a nivel de aplicación (software/backend) se debe consultar `INVENTARIO`. Si `Cantidad_Comprada <= Cantidad_Disponible`, se permite la transacción y se resta dicha cantidad del inventario; de lo contrario, se rechaza la operación.
